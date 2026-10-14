@@ -1,0 +1,784 @@
+/* =====================================================
+   CORRENTINAPP - ESTILOS
+   Inspirado en los Esteros del Iberá: agua profunda,
+   verdes de juncal, violeta del camalote y ámbar de atardecer.
+   ===================================================== */
+
+/* ---------- 1. VARIABLES ---------- */
+
+:root {
+    --fondo-oscuro: #06262b;
+    --fondo-medio: #0a3d41;
+    --agua: #12756f;
+    --ambar: #f6b73c;
+    --ambar-oscuro: #b57a0d;
+    --bruma: #f1f7f4;
+    --tinta: #13292b;
+    --borde-suave: #c9ddd5;
+    --acierto: #1e7a3a;
+    --error: #b3261e;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+
+/* ---------- 2. BASE ---------- */
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    line-height: 1.5;
+    color: #fff;
+
+    /* Degradé de agua + líneas finas que recuerdan a los juncos */
+    background:
+        repeating-linear-gradient(100deg, transparent 0 22px, rgba(255, 255, 255, 0.03) 22px 24px),
+        linear-gradient(170deg, var(--fondo-oscuro) 0%, var(--fondo-medio) 55%, #0f5a52 100%);
+}
+
+h1, h2, h3 {
+    font-family: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    line-height: 1.2;
+}
+
+/* Foco visible para navegar con teclado */
+:focus-visible {
+    outline: 3px solid #ffd166;
+    outline-offset: 3px;
+}
+
+.tarjeta :focus-visible {
+    outline-color: #1a4fb3;
+}
+
+/* Enlace para saltar al contenido (accesibilidad) */
+.salto {
+    position: absolute;
+    left: -999px;
+    top: 8px;
+    background: #fff;
+    color: var(--tinta);
+    padding: 8px 14px;
+    border-radius: 8px;
+    z-index: 100;
+}
+
+.salto:focus {
+    left: 8px;
+}
+
+
+/* ---------- 3. ENCABEZADO ---------- */
+
+.cabecera {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 20px 20px 0;
+}
+
+.cabecera h1 {
+    margin: 0;
+    font-size: clamp(2rem, 6vw, 3rem);
+    letter-spacing: 0.5px;
+}
+
+.lema {
+    margin: 2px 0 0;
+    color: #a8f0df;
+    font-size: 1.05rem;
+}
+
+.boton-sonido {
+    min-height: 44px;
+    padding: 8px 18px;
+
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+
+    background: rgba(255, 255, 255, 0.12);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 999px;
+    cursor: pointer;
+}
+
+.boton-sonido:hover {
+    background: rgba(255, 255, 255, 0.22);
+}
+
+.boton-sonido[aria-pressed="false"] {
+    opacity: 0.8;
+    border-style: dashed;
+}
+
+
+/* ---------- 4. CONTENEDOR Y MARCADOR ---------- */
+
+.contenedor {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.marcador {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 26px;
+}
+
+.dato {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 10px 8px;
+
+    background: rgba(255, 255, 255, 0.09);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 14px;
+}
+
+.dato-etiqueta {
+    font-size: 0.85rem;
+    color: #cfeee6;
+}
+
+.dato-valor {
+    font-size: 1.7rem;
+    line-height: 1.2;
+}
+
+/* Animación breve cuando cambia el puntaje */
+.sube {
+    animation: subir 0.5s ease;
+}
+
+@keyframes subir {
+    0%   { transform: scale(1); color: #fff; }
+    40%  { transform: scale(1.35); color: var(--ambar); }
+    100% { transform: scale(1); color: #fff; }
+}
+
+
+/* ---------- 5. DISTRIBUCIÓN DEL JUEGO ---------- */
+
+.juego {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 28px;
+}
+
+.panel-ruleta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* ---------- 6. RULETA ---------- */
+
+.zona-ruleta {
+    --tam: min(86vw, 380px);
+    --radio: calc(var(--tam) * 0.33);
+
+    position: relative;
+    width: var(--tam);
+    height: var(--tam);
+    margin: 28px auto 24px;
+}
+
+/* Flecha que señala el sector ganador */
+.flecha {
+    position: absolute;
+    top: -24px;
+    left: 50%;
+    z-index: 5;
+
+    width: 0;
+    height: 0;
+
+    border-left: 18px solid transparent;
+    border-right: 18px solid transparent;
+    border-top: 38px solid var(--ambar);
+
+    transform: translateX(-50%);
+    filter: drop-shadow(0 3px 2px rgba(0, 0, 0, 0.55));
+}
+
+.ruleta {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    border: 8px solid #e9f5f1;
+
+    /* El fondo (conic-gradient) lo genera script.js según las categorías */
+    box-shadow: 0 0 0 4px rgba(18, 117, 111, 0.6), 0 0 40px rgba(168, 240, 223, 0.35);
+
+    transition: transform var(--duracion-giro, 4s) cubic-bezier(0.17, 0.67, 0.12, 0.99);
+}
+
+/* Líneas blancas que separan los sectores */
+.ruleta::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: repeating-conic-gradient(
+        from -1deg,
+        rgba(255, 255, 255, 0.9) 0deg 2deg,
+        transparent 2deg var(--sector, 60deg)
+    );
+}
+
+/* Etiqueta de cada sector (la crea script.js) */
+.sector-etiqueta {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+
+    width: max-content;
+
+    font-size: clamp(0.66rem, 2.6vw, 0.88rem);
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+
+    /* Se lleva la etiqueta hacia afuera, siguiendo el ángulo del sector */
+    transform: translate(-50%, -50%) rotate(var(--ang)) translateY(calc(var(--radio) * -1));
+    pointer-events: none;
+}
+
+.sector-icono {
+    font-size: 1.7em;
+    line-height: 1;
+}
+
+.centro {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: calc(var(--tam) * 0.3);
+    aspect-ratio: 1;
+
+    background: var(--fondo-oscuro);
+    border: 5px solid #e9f5f1;
+    border-radius: 50%;
+
+    font-size: clamp(0.55rem, 2vw, 0.72rem);
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-align: center;
+
+    box-shadow: 0 0 14px rgba(0, 0, 0, 0.6);
+}
+
+
+/* ---------- 7. BOTONES ---------- */
+
+.boton-girar {
+    min-height: 56px;
+    padding: 14px 36px;
+
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #1c1300;
+
+    background: var(--ambar);
+    border: none;
+    border-radius: 999px;
+    box-shadow: 0 6px 0 var(--ambar-oscuro);
+    cursor: pointer;
+
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.boton-girar:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 0 var(--ambar-oscuro);
+}
+
+.boton-girar:active:not(:disabled) {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 var(--ambar-oscuro);
+}
+
+.boton-girar:disabled {
+    color: #1f2d2b;
+    background: #8fa19d;
+    box-shadow: 0 6px 0 #5f6f6b;
+    cursor: not-allowed;
+}
+
+.boton-secundario {
+    min-height: 48px;
+    margin-top: 14px;
+    padding: 10px 26px;
+
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+
+    background: var(--fondo-medio);
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+}
+
+.boton-secundario:hover {
+    background: var(--agua);
+}
+
+.indicacion {
+    min-height: 1.5em;
+    margin: 18px 0 8px;
+    text-align: center;
+    font-size: 1.05rem;
+    color: #d8f5ec;
+}
+
+
+/* ---------- 8. LEYENDA DE CATEGORÍAS ---------- */
+
+.leyenda {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+
+    margin: 10px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.leyenda li {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 4px 12px;
+
+    font-size: 0.85rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+}
+
+.leyenda-punto {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+}
+
+
+/* ---------- 9. TARJETA DE PREGUNTA ---------- */
+
+.tarjeta {
+    position: relative;
+    overflow: hidden;
+
+    padding: 24px;
+
+    color: var(--tinta);
+    background: var(--bruma);
+    border-radius: 20px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+
+.tarjeta-vacia {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 200px;
+    text-align: center;
+
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    border: 2px dashed rgba(255, 255, 255, 0.4);
+    box-shadow: none;
+}
+
+.vacia-icono {
+    margin: 0;
+    font-size: 3rem;
+}
+
+.vacia-texto {
+    margin: 8px 0 0;
+    font-size: 1.15rem;
+}
+
+/* Animación cuando aparece una pregunta nueva */
+.entra {
+    animation: aparecer 0.4s ease;
+}
+
+@keyframes aparecer {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.tarjeta-cabecera {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.categoria {
+    padding: 5px 14px;
+
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #fff;
+
+    /* El color lo pone script.js según la categoría */
+    background: var(--fondo-medio);
+    border-radius: 999px;
+}
+
+.progreso {
+    font-size: 0.9rem;
+    color: #3d5557;
+}
+
+.tema {
+    margin: 14px 0 4px;
+    font-size: 1.5rem;
+}
+
+.enunciado {
+    margin: 0 0 16px;
+    font-size: 1.1rem;
+}
+
+
+/* ---------- 10. OPCIONES DE RESPUESTA ---------- */
+
+.opciones {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 10px;
+}
+
+.opcion {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    min-height: 56px;
+    padding: 10px 14px;
+
+    font-size: 1rem;
+    text-align: left;
+    color: var(--tinta);
+
+    background: #fff;
+    border: 2px solid var(--borde-suave);
+    border-radius: 12px;
+    cursor: pointer;
+
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.opcion:hover:not(:disabled) {
+    border-color: var(--agua);
+    background: #e6f4ef;
+}
+
+.opcion:disabled {
+    cursor: default;
+    color: var(--tinta);
+    opacity: 0.65;
+}
+
+.opcion-letra {
+    flex: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 32px;
+    height: 32px;
+
+    font-weight: 800;
+    background: #dcebe5;
+    border-radius: 50%;
+}
+
+.opcion-texto {
+    flex: 1;
+}
+
+.opcion-marca {
+    flex: none;
+    font-size: 0.85rem;
+    font-weight: 800;
+}
+
+/* Estados después de responder (no dependen solo del color: llevan texto e ícono) */
+.opcion.correcta {
+    opacity: 1;
+    background: #d7f2dd;
+    border-color: var(--acierto);
+}
+
+.opcion.correcta .opcion-marca {
+    color: var(--acierto);
+}
+
+.opcion.incorrecta {
+    opacity: 1;
+    background: #fbdcdc;
+    border-color: var(--error);
+    animation: sacudir 0.4s;
+}
+
+.opcion.incorrecta .opcion-marca {
+    color: var(--error);
+}
+
+.opcion.revelada {
+    opacity: 1;
+    background: #eaf8ee;
+    border: 2px dashed var(--acierto);
+}
+
+.opcion.revelada .opcion-marca {
+    color: var(--acierto);
+}
+
+@keyframes sacudir {
+    0%, 100% { transform: translateX(0); }
+    25%      { transform: translateX(-6px); }
+    75%      { transform: translateX(6px); }
+}
+
+
+/* ---------- 11. RETROALIMENTACIÓN ---------- */
+
+.retro {
+    margin-top: 18px;
+    padding: 14px 16px;
+
+    background: #fff;
+    border-left: 6px solid var(--agua);
+    border-radius: 10px;
+}
+
+.retro.acierto {
+    border-left-color: var(--acierto);
+}
+
+.retro.fallo {
+    border-left-color: var(--error);
+}
+
+.retro p {
+    margin: 0 0 8px;
+}
+
+.veredicto {
+    font-size: 1.15rem;
+    font-weight: 800;
+}
+
+.explicacion {
+    color: #2d4143;
+}
+
+
+/* ---------- 12. CONFETI ---------- */
+
+.confeti {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.confeti span {
+    position: absolute;
+    top: -12px;
+    width: 10px;
+    height: 14px;
+    border-radius: 2px;
+    animation: caer 1.3s ease-in forwards;
+}
+
+@keyframes caer {
+    to { transform: translateY(420px) rotate(540deg); opacity: 0; }
+}
+
+
+/* ---------- 13. PANTALLA FINAL ---------- */
+
+.final {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 28px 22px;
+
+    text-align: center;
+    color: var(--tinta);
+
+    background: var(--bruma);
+    border-radius: 24px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+
+    animation: aparecer 0.5s ease;
+}
+
+.final h2 {
+    margin: 0 0 6px;
+    font-size: 1.8rem;
+}
+
+.final-porcentaje {
+    margin: 8px 0 0;
+    font-size: 4rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--agua);
+}
+
+.final-sub {
+    margin: 0 0 18px;
+    color: #3d5557;
+}
+
+.final-datos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin: 0 0 18px;
+}
+
+.final-datos div {
+    padding: 12px 8px;
+    background: #fff;
+    border: 1px solid var(--borde-suave);
+    border-radius: 12px;
+}
+
+.final-datos dt {
+    font-size: 0.9rem;
+    color: #3d5557;
+}
+
+.final-datos dd {
+    margin: 2px 0 0;
+    font-size: 1.7rem;
+    font-weight: 800;
+}
+
+.final-mensaje {
+    margin: 0 0 22px;
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+
+
+/* ---------- 14. PIE ---------- */
+
+footer {
+    padding: 10px 20px 30px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #b9dcd3;
+}
+
+
+/* ---------- 15. ADAPTACIÓN A PANTALLAS ---------- */
+
+/* Computadoras y tablets: ruleta y pregunta una al lado de la otra */
+@media (min-width: 920px) {
+    .juego {
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+    }
+
+    .marcador {
+        max-width: 640px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+/* Celulares */
+@media (max-width: 520px) {
+    .contenedor {
+        padding: 14px;
+    }
+
+    .cabecera {
+        padding: 14px 14px 0;
+    }
+
+    .dato-valor {
+        font-size: 1.4rem;
+    }
+
+    .dato-etiqueta {
+        font-size: 0.78rem;
+    }
+
+    .tarjeta {
+        padding: 18px;
+    }
+
+    .boton-girar {
+        width: 100%;
+        max-width: 340px;
+    }
+
+    .opciones {
+        grid-template-columns: 1fr;
+    }
+
+    .boton-secundario {
+        width: 100%;
+    }
+}
+
+
+/* ---------- 16. REDUCCIÓN DE MOVIMIENTO ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

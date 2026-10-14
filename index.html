@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CorrentinApp: ruleta educativa para aprender sobre la provincia de Corrientes, Argentina.">
+
+    <title>CorrentinApp - La ruleta de Corrientes</title>
+
+    <link rel="stylesheet" href="estilos.css">
+</head>
+
+<body>
+
+    <a class="salto" href="#zonaJuego">Ir al juego</a>
+
+    <!-- ENCABEZADO -->
+    <header class="cabecera">
+        <div>
+            <h1>CorrentinApp</h1>
+            <p class="lema">Girá la ruleta y descubrí Corrientes</p>
+        </div>
+
+        <!-- Control para silenciar los sonidos -->
+        <button id="botonSonido" class="boton-sonido" type="button" aria-pressed="true">
+            🔊 Sonido: sí
+        </button>
+    </header>
+
+    <main class="contenedor">
+
+        <!-- MARCADOR -->
+        <section class="marcador" aria-label="Marcador de la partida">
+            <div class="dato">
+                <span class="dato-etiqueta">⭐ Puntaje</span>
+                <strong id="puntaje" class="dato-valor">0</strong>
+            </div>
+            <div class="dato">
+                <span class="dato-etiqueta">🎯 Respondidas</span>
+                <strong class="dato-valor"><span id="contador">0</span>/<span id="totalPreguntas">0</span></strong>
+            </div>
+            <div class="dato">
+                <span class="dato-etiqueta">🔥 Racha</span>
+                <strong id="racha" class="dato-valor">0</strong>
+            </div>
+        </section>
+
+        <!-- ZONA DE JUEGO: ruleta a la izquierda, pregunta a la derecha -->
+        <div id="zonaJuego" class="juego">
+
+            <!-- RULETA -->
+            <section class="panel-ruleta" aria-label="Ruleta de categorías">
+
+                <div id="zonaRuleta" class="zona-ruleta">
+                    <div class="flecha" aria-hidden="true"></div>
+
+                    <div id="ruleta" class="ruleta" aria-hidden="true">
+                        <div class="centro">CORRIENTES</div>
+                    </div>
+                </div>
+
+                <button id="botonGirar" class="boton-girar" type="button">
+                    🎡 Girar la ruleta
+                </button>
+
+                <p id="indicacion" class="indicacion" aria-live="polite"></p>
+
+                <ul id="leyenda" class="leyenda" aria-label="Categorías de la ruleta"></ul>
+
+            </section>
+
+            <!-- PREGUNTA -->
+            <section class="panel-pregunta" aria-label="Pregunta">
+
+                <!-- Se muestra mientras no hay pregunta -->
+                <div id="tarjetaVacia" class="tarjeta tarjeta-vacia">
+                    <p class="vacia-icono" aria-hidden="true">🐊</p>
+                    <p id="textoVacio" class="vacia-texto"></p>
+                </div>
+
+                <!-- Tarjeta con la pregunta actual -->
+                <article id="tarjetaPregunta" class="tarjeta" hidden>
+
+                    <div class="tarjeta-cabecera">
+                        <span id="categoria" class="categoria"></span>
+                        <span id="progreso" class="progreso"></span>
+                    </div>
+
+                    <h2 id="tema" class="tema" tabindex="-1"></h2>
+                    <p id="pregunta" class="enunciado"></p>
+
+                    <div id="opciones" class="opciones" role="group" aria-label="Opciones de respuesta"></div>
+
+                    <!-- Resultado de la respuesta (se anuncia a lectores de pantalla) -->
+                    <div id="zonaRetro" aria-live="polite">
+                        <div id="retro" class="retro" hidden>
+                            <p id="veredicto" class="veredicto"></p>
+                            <p id="respuestaCorrecta" class="respuesta-correcta"></p>
+                            <p id="explicacion" class="explicacion"></p>
+                            <button id="botonSiguiente" class="boton-secundario" type="button"></button>
+                        </div>
+                    </div>
+
+                </article>
+
+            </section>
+        </div>
+
+        <!-- PANTALLA FINAL -->
+        <section id="pantallaFinal" class="final" hidden aria-labelledby="tituloFinal">
+            <h2 id="tituloFinal" tabindex="-1">🏁 ¡Terminaste la partida!</h2>
+
+            <p class="final-porcentaje"><span id="finalPorcentaje">0</span>%</p>
+            <p class="final-sub">de aciertos</p>
+
+            <dl class="final-datos">
+                <div><dt>Puntaje total</dt><dd id="finalPuntaje">0</dd></div>
+                <div><dt>Respuestas correctas</dt><dd id="finalAciertos">0</dd></div>
+                <div><dt>Respuestas incorrectas</dt><dd id="finalErrores">0</dd></div>
+                <div><dt>Preguntas respondidas</dt><dd id="finalRespondidas">0</dd></div>
+            </dl>
+
+            <p id="finalMensaje" class="final-mensaje"></p>
+
+            <button id="botonReiniciar" class="boton-girar" type="button">
+                🔄 Volver a jugar
+            </button>
+        </section>
+
+    </main>
+
+    <footer>
+        Laboratorio de Aplicaciones II • 2026
+    </footer>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
